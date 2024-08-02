@@ -247,20 +247,22 @@
     smallcaps[#it.body]
   }
   
+  // HACK: align personel info to the left
   let name = {
-    align(center)[
+    align(left)[
       #pad(bottom: 5pt)[
         #block[
           #set text(
             size: 32pt,
             style: "normal",
-            font: ("Roboto"),
+            // HACK: Use default font for name
+            // font: ("Roboto"),
           )
           #if language == "zh" or language == "ja" [
             #text(
               accent-color,
-              weight: "thin",
-            )[#author.firstname]#text(weight: "bold")[#author.lastname]
+              weight: "regular",
+            )[#author.firstname]#text(weight: "regular")[#author.lastname]
           ] else [
             #text(accent-color, weight: "thin")[#author.firstname]
             #text(weight: "bold")[#author.lastname]
@@ -276,7 +278,7 @@
       size: 9pt,
       weight: "regular",
     )
-    align(center)[
+    align(left)[
       #smallcaps[
         #author.positions.join(
           text[#"  "#sym.dot.c#"  "],
@@ -290,7 +292,7 @@
       size: 9pt,
       weight: "regular",
     )
-    align(center)[
+    align(left)[
       #if ("address" in author) [
         #author.address
       ]
@@ -302,7 +304,7 @@
     
     let separator = box(width: 5pt)
     
-    align(center)[
+    align(left)[
       #set text(
         size: 9pt,
         weight: "regular",
@@ -356,11 +358,32 @@
       ]
     ]
   }
+
+  // HACK: add profile picture to resume
+  let profile = {
+    align(right)[
+      #if author.profile-picture != none {
+        pad(bottom: 5pt)[
+          #block(
+            clip: true,
+            stroke: 0pt,
+            radius: 0cm,
+            height: 3.3cm,
+            author.profile-picture,
+          )
+        ]
+      }
+    ]
+  }
   
-  name
-  positions
-  address
-  contacts
+  grid(columns: (2fr, 1fr), rows: 7em,[
+      #name
+      #positions
+      #address
+      #contacts
+    ],
+    profile
+  )
   body
 }
 
@@ -437,10 +460,11 @@
   set pad(top: 2pt)
   
   pad[
+  // HACK: adjust skill item arrangement
     #grid(
-      columns: (20fr, 80fr),
+      columns: (10fr, 90fr),
       gutter: 10pt,
-      align(right)[
+      align(left)[
         #set text(hyphenate: false)
         == #category
       ],
