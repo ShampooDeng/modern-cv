@@ -434,13 +434,17 @@
 /// Show cumulative GPA.
 /// *Example:*
 /// #example(`resume.resume-gpa("3.5", "4.0")`)
-#let resume-gpa(numerator, denominator) = {
+#let resume-gpa(numerator, denominator, lang) = {
   set text(
     size: 12pt,
     style: "italic",
     weight: "light",
   )
-  text[Cumulative GPA: #box[#strong[#numerator] / #denominator]]
+	if lang == "zh" {
+		text[平均学分绩点: #box[#strong[#numerator] / #denominator]]
+	} else {
+		text[Cumulative GPA: #box[#strong[#numerator] / #denominator]]
+	}
 }
 
 /// Show a certification in the resume.
