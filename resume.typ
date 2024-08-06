@@ -3,7 +3,7 @@
 
 #show: resume.with(
   author: (
-    profile-picture: image("./本科证件照.jpg"),
+    profile-picture: image("./profile.png"),
     firstname: "刘",
     lastname: "万轩",
     email: "lwxkkdy@foxmail.com",
