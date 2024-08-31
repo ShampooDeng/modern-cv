@@ -5,6 +5,7 @@
     firstname: "John",
     lastname: "Smith",
     email: "js@gmail.com",
+    homepage: "https://example.com",
     phone: "(+1) 111-111-1111",
     github: "DeveloperPaul123",
     linkedin: "John Smith",
@@ -16,6 +17,8 @@
   ),
   profile-picture: image("./profile.png"),
   language: "en",
+  font: "Times New Roman",
+  // show-footer: false, // Uncomment to hide footer
 )
 
 #hiring-entity-info(entity-info: (

@@ -5,6 +5,7 @@
     firstname: "John",
     lastname: "Smith",
     email: "js@example.com",
+    homepage: "https://example.com",
     phone: "(+1) 111-111-1111",
     github: "DeveloperPaul123",
     twitter: "typstapp",
@@ -22,6 +23,7 @@
   date: datetime.today().display(),
   language: "en",
   colored-headers: true,
+  show-footer: false,
 )
 
 = Experience
@@ -45,6 +47,17 @@
   location: "Example City, EX",
   date: "2011 - 2019",
   description: "Previous Company, Inc.",
+)
+
+#resume-item[
+  - #lorem(20)
+  - #lorem(15)
+  - #lorem(25)
+]
+
+#resume-entry(
+  title: "Intern",
+  location: "Example City, EX",
 )
 
 #resume-item[

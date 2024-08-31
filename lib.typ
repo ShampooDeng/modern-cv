@@ -27,6 +27,7 @@
 #let phone-icon = box(fa-icon("square-phone", fill: color-darknight))
 #let email-icon = box(fa-icon("envelope", fill: color-darknight))
 #let birth-icon = box(fa-icon("cake", fill: color-darknight))
+#let homepage-icon = box(fa-icon("home", fill: color-darknight))
 
 /// Helpers
 
@@ -59,6 +60,50 @@
         #right_body
       ]
     ]
+  ]
+}
+
+#let __coverletter_footer(author, language, date, lang_data) = {
+  set text(
+    fill: gray,
+    size: 8pt,
+  )
+  __justify_align_3[
+    #smallcaps[#date]
+  ][
+    #smallcaps[
+      #if language == "zh" or language == "ja" [
+        #author.firstname#author.lastname
+      ] else [
+        #author.firstname#sym.space#author.lastname
+      ]
+      #sym.dot.c
+      #linguify("cover-letter", from: lang_data)
+    ]
+  ][
+    #counter(page).display()
+  ]
+}
+
+#let __resume_footer(author, language, lang_data, date) = {
+  set text(
+    fill: gray,
+    size: 8pt,
+  )
+  __justify_align_3[
+    #smallcaps[#date]
+  ][
+    #smallcaps[
+      #if language == "zh" or language == "ja" [
+        #author.firstname#author.lastname
+      ] else [
+        #author.firstname#sym.space#author.lastname
+      ]
+      #sym.dot.c
+      #linguify("resume", from: lang_data)
+    ]
+  ][
+    #counter(page).display()
   ]
 }
 
@@ -145,7 +190,9 @@
   date: datetime.today().display("[month repr:long] [day], [year]"),
   accent-color: default-accent-color,
   colored-headers: true,
+  show-footer: true,
   language: "en",
+  font: ("Source Sans Pro", "Source Sans 3"),
   body,
 ) = {
   if type(accent-color) == "string" {
@@ -160,7 +207,7 @@
   )
   
   set text(
-    font: ("Source Sans Pro", "Source Sans 3"),
+    font: font,
     lang: language,
     size: 11pt,
     fill: color-darkgray,
@@ -170,27 +217,7 @@
   set page(
     paper: "a4",
     margin: (left: 15mm, right: 15mm, top: 10mm, bottom: 10mm),
-    footer: [
-      #set text(
-        fill: gray,
-        size: 8pt,
-      )
-      #__justify_align_3[
-        #smallcaps[#date]
-      ][
-        #smallcaps[
-          #if language == "zh" or language == "ja" [
-            #author.firstname#author.lastname
-          ] else [
-            #author.firstname#sym.space#author.lastname
-          ]
-          #sym.dot.c
-          #linguify("resume", from: lang_data)
-        ]
-      ][
-        #counter(page).display()
-      ]
-    ],
+    footer: if show-footer [#__resume_footer(author, language, lang_data, date)] else [],
     footer-descent: 0pt,
   )
   
@@ -326,6 +353,11 @@
             #email-icon
             #box[#link("mailto:" + author.email)[#author.email]]
           ]
+          #if ("homepage" in author) [
+            #separator
+            #homepage-icon
+            #box[#link(author.homepage)[#author.homepage]]
+          ]
           #if ("github" in author) [
             #separator
             #github-icon
@@ -427,7 +459,9 @@
   
   pad[
     #justified-header(title-content, location)
-    #secondary-justified-header(description, date)
+    #if description != "" or date != "" [
+      #secondary-justified-header(description, date)
+    ]
   ]
 }
 
@@ -501,6 +535,8 @@
   date: datetime.today().display("[month repr:long] [day], [year]"),
   accent-color: default-accent-color,
   language: "en",
+  font: ("Source Sans Pro", "Source Sans 3"),
+  show-footer: true,
   body,
 ) = {
   if type(accent-color) == "string" {
@@ -516,7 +552,7 @@
   )
   
   set text(
-    font: ("Source Sans Pro", "Source Sans 3"),
+    font: font,
     lang: language,
     size: 11pt,
     fill: color-darkgray,
@@ -526,27 +562,7 @@
   set page(
     paper: "a4",
     margin: (left: 15mm, right: 15mm, top: 10mm, bottom: 10mm),
-    footer: [
-      #set text(
-        fill: gray,
-        size: 8pt,
-      )
-      #__justify_align_3[
-        #smallcaps[#date]
-      ][
-        #smallcaps[
-          #if language == "zh" or language == "ja" [
-            #author.firstname#author.lastname
-          ] else [
-            #author.firstname#sym.space#author.lastname
-          ]
-          #sym.dot.c
-          #linguify("cover-letter", from: lang_data)
-        ]
-      ][
-        #counter(page).display()
-      ]
-    ],
+    footer: if show-footer [#__coverletter_footer(author, language, date, lang_data)] else [],
     footer-descent: 0pt,
   )
   
