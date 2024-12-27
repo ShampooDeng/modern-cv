@@ -1,4 +1,4 @@
-#import "@preview/modern-cv:0.5.0": *
+#import "@preview/modern-cv:0.7.0": *
 
 #show: resume.with(
   author: (
@@ -50,9 +50,8 @@
 )
 
 #resume-item[
-  - #lorem(20)
-  - #lorem(15)
-  - #lorem(25)
+  // content doesn't have to be bullet points
+  #lorem(72)
 ]
 
 #resume-entry(

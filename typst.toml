@@ -1,7 +1,7 @@
 [package]
 name = "modern-cv"
-version = "0.6.0"
-compiler = "0.11.0"
+version = "0.7.0"
+compiler = "0.12.0"
 entrypoint = "lib.typ"
 authors = ["Paul Tsouchlos <https://github.com/DeveloperPaul123>"]
 license = "MIT"
@@ -10,7 +10,6 @@ keywords = ["CV", "Curriculum Vitae", "Resume", "Minimalistic", "Professional", 
 categories = ["cv"]
 disciplines = []
 exclude = ["resume-documentation*", "scripts*", "assets/images/*"]
-homepage = "https://github.com/DeveloperPaul123/modern-cv"
 repository = "https://github.com/DeveloperPaul123/modern-cv"
 
 [template]
