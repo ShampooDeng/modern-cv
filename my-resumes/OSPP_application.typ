@@ -1,9 +1,9 @@
+#import "../lib.typ": *
 //#import "@preview/modern-cv:0.3.0": *
-#import "lib.typ": *
 
 #show: resume.with(
   author: (
-    profile-picture: image("./profile.png"),
+    profile-picture: image("../assets/images/profile.png"),
     firstname: "刘",
     lastname: "万轩",
     email: "lwxkkdy@foxmail.com",
@@ -14,7 +14,10 @@
   ),
   date: datetime.today().display(),
   language: "zh",
+  font: "Source Han Sans",
+  header-font: "Source Han Sans",
   colored-headers: true,
+  show-footer: true,
 )
 
 = 教育背景
@@ -50,35 +53,41 @@
 #resume-skill-item(
   "编程语言",
   (
-  [#strong("Python: 掌握")numpy, scipy等科学计算库和#strong("熟悉")Pytorch深度学习框架],
-    strong("\nRust")+": 正在学习", strong("C/Lua")+": 了解基本概念"
+    [#strong("Python: 掌握")numpy, scipy等科学计算库和#strong("熟悉")Pytorch深度学习框架],
+    strong("\nRust") + ": 正在学习",
+    strong("C/Lua") + ": 了解基本概念",
   ),
 )
 #resume-skill-item(
   "系统平台",
   (
-    "日常使用"+strong("Linux(Manjaro")+", Arch, Ubuntu"+strong(")"),"熟悉各类常用命令行工具",
-    "\n及Windows"
-  )
+    "日常使用" + strong("Linux(Manjaro") + ", Arch, Ubuntu" + strong(")"),
+    "熟悉各类常用命令行工具",
+    "\n及Windows",
+  ),
 )
 #resume-skill-item(
   "软件工具",
-  ([#strong("Neovim"):个人日常维护的配置#fa-icon("github", fill: color-darkgray)#link("https://github.com/ShampooDeng/nvim","ShampooDeng/nvim")],
-  strong("\nVisual Studio Code"), "gitui", "jupyter","ranger/yazi"),
-
+  (
+    [#strong("Neovim"):个人日常维护的配置#fa-icon("github", fill: color-darkgray)#link("https://github.com/ShampooDeng/nvim","ShampooDeng/nvim")],
+    strong("\nVisual Studio Code"),
+    "gitui",
+    "jupyter",
+    "ranger/yazi",
+  ),
 )
 #resume-skill-item(
   "外语水平",
-  (strong("英语六级: 579"), "已通过WSK", "阅读英文文档资料, 英语日常交流等")
+  (strong("英语六级: 579"), "已通过WSK", "阅读英文文档资料, 英语日常交流等"),
 )
 
 = 科研&项目经验
 
 #resume-entry(
   title: "第一作者投稿会议",
-  location: [#link("https://piv.sdsu.edu/","ISPIV")],
+  location: [#link("https://piv.sdsu.edu/", "ISPIV")],
   date: "2023.05",
-  description: link("https://scholarworks.calstate.edu/downloads/rj430c11g","论文标题: Embed to Velocimetry"),
+  description: link("https://scholarworks.calstate.edu/downloads/rj430c11g", "论文标题: Embed to Velocimetry"),
 )
 
 #resume-item[
@@ -122,5 +131,5 @@
 
 #resume-item[
   - 程序界面基于Rust的图形框架egui, 支持用户通过鼠标🖱自定义多边形.
-  - 基于Rust实现一种三角剖分算法(work in progress)
+  - 基于Rust实现一种三角剖分算法
 ]
