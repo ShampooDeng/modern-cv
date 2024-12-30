@@ -506,6 +506,30 @@
   set pad(top: 2pt)
 
   pad[
+    #grid(
+      columns: (20fr, 80fr),
+      gutter: 10pt,
+      align(right)[
+        #set text(hyphenate: false)
+        == #category
+      ],
+      align(left)[
+        #set text(
+          size: 11pt,
+          style: "normal",
+          weight: "light",
+        )
+        #items.join(", ")
+      ],
+    )
+  ]
+}
+
+#let resume-skill-item-zh(category, items) = {
+  set block(below: 0.65em)
+  set pad(top: 2pt)
+
+  pad[
     // HACK: adjust skill item arrangement
     #grid(
       columns: (10fr, 90fr),
