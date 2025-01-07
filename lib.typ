@@ -187,7 +187,8 @@
   colored-headers: true,
   show-footer: true,
   language: "en",
-  font: ("Source Sans Pro", "Source Sans 3"),
+  // font: ("Source Sans Pro", "Source Sans 3"),
+  font: "Source Sans 3",
   header-font: "Roboto",
   body,
 ) = {
