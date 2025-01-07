@@ -7,7 +7,7 @@
     firstname: "刘",
     lastname: "万轩",
     email: "lwxkkdy@foxmail.com",
-    phone: "(+86) 18827086860",
+    phone: "(+86) TODO",
     github: "ShampooDeng",
     address: "地址: 陕西省西安市碑林区",
     positions: ("硕士研究生在读",),
