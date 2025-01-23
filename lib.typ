@@ -9,21 +9,11 @@
 #let default-location-color = rgb("#333333")
 
 // const icons
-#let linkedin-icon = box(
-  fa-icon("linkedin", fill: color-darknight),
-)
-#let github-icon = box(
-  fa-icon("github", fill: color-darknight),
-)
-#let twitter-icon = box(
-  fa-icon("twitter", fill: color-darknight),
-)
-#let google-scholar-icon = box(
-  fa-icon("google-scholar", fill: color-darknight),
-)
-#let orcid-icon = box(
-  fa-icon("orcid", fill: color-darknight),
-)
+#let linkedin-icon = box(fa-icon("linkedin", fill: color-darknight))
+#let github-icon = box(fa-icon("github", fill: color-darknight))
+#let twitter-icon = box(fa-icon("twitter", fill: color-darknight))
+#let google-scholar-icon = box(fa-icon("google-scholar", fill: color-darknight))
+#let orcid-icon = box(fa-icon("orcid", fill: color-darknight))
 #let phone-icon = box(fa-icon("square-phone", fill: color-darknight))
 #let email-icon = box(fa-icon("envelope", fill: color-darknight))
 #let birth-icon = box(fa-icon("cake", fill: color-darknight))
@@ -119,7 +109,7 @@
 /// -> none
 #let github-link(github-path) = {
   set box(height: 11pt)
-  
+
   align(right + horizon)[
     #fa-icon("github", fill: color-darkgray) #link(
       "https://github.com/" + github-path,
@@ -197,14 +187,15 @@
   colored-headers: true,
   show-footer: true,
   language: "en",
-  font: ("Source Sans Pro", "Source Sans 3"),
-  header-font: ("Roboto"),
+  // font: ("Source Sans Pro", "Source Sans 3"),
+  font: "Source Sans 3",
+  header-font: "Roboto",
   body,
 ) = {
   if type(accent-color) == "string" {
     accent-color = rgb(accent-color)
   }
-  
+
   let lang_data = toml("lang.toml")
 
   show: body => context {
@@ -222,7 +213,7 @@
     fill: color-darkgray,
     fallback: true,
   )
-  
+
   set page(
     paper: "a4",
     margin: (left: 15mm, right: 15mm, top: 10mm, bottom: 10mm),
@@ -234,18 +225,18 @@
       )] else [],
     footer-descent: 0pt,
   )
-  
+
   // set paragraph spacing
   set par(
     spacing: 0.75em,
     justify: true,
   )
-  
+
   set heading(
     numbering: none,
     outlined: false,
   )
-  
+
   show heading.where(level: 1): it => [
     #set text(
       size: 16pt,
@@ -261,7 +252,7 @@
     #text[#strong[#text(color)[#it.body.text]]]
     #box(width: 1fr, line(length: 100%))
   ]
-  
+
   show heading.where(level: 2): it => {
     set text(
       color-darkgray,
@@ -271,7 +262,7 @@
     )
     it.body
   }
-  
+
   show heading.where(level: 3): it => {
     set text(
       size: 10pt,
@@ -279,9 +270,10 @@
     )
     smallcaps[#it.body]
   }
-  
+
+  // HACK: align personel info to the left
   let name = {
-    align(center)[
+    align(left)[
       #pad(bottom: 5pt)[
         #block[
           #set text(
@@ -292,8 +284,8 @@
           #if language == "zh" or language == "ja" [
             #text(
               accent-color,
-              weight: "thin",
-            )[#author.firstname]#text(weight: "bold")[#author.lastname]
+              weight: "regular",
+            )[#author.firstname]#text(weight: "regular")[#author.lastname]
           ] else [
             #text(accent-color, weight: "thin")[#author.firstname]
             #text(weight: "bold")[#author.lastname]
@@ -302,40 +294,38 @@
       ]
     ]
   }
-  
+
   let positions = {
     set text(
       accent-color,
       size: 9pt,
       weight: "regular",
     )
-    align(center)[
+    align(left)[
       #smallcaps[
-        #author.positions.join(
-          text[#"  "#sym.dot.c#"  "],
-        )
+        #author.positions.join(text[#"  "#sym.dot.c#"  "])
       ]
     ]
   }
-  
+
   let address = {
     set text(
       size: 9pt,
       weight: "regular",
     )
-    align(center)[
+    align(left)[
       #if ("address" in author) [
         #author.address
       ]
     ]
   }
-  
+
   let contacts = {
     set box(height: 9pt)
-    
+
     let separator = box(width: 5pt)
-    
-    align(center)[
+
+    align(left)[
       #set text(
         size: 9pt,
         weight: "regular",
@@ -399,11 +389,35 @@
       ]
     ]
   }
-  
-  name
-  positions
-  address
-  contacts
+
+  // HACK: add profile picture to resume
+  let profile = {
+    align(right)[
+      #if author.profile-picture != none {
+        pad(bottom: 5pt)[
+          #block(
+            clip: true,
+            stroke: 0pt,
+            radius: 0cm,
+            height: 3.3cm,
+            author.profile-picture,
+          )
+        ]
+      }
+    ]
+  }
+
+  grid(
+    columns: (2fr, 1fr),
+    rows: 7em,
+    [
+      #name
+      #positions
+      #address
+      #contacts
+    ],
+    profile,
+  )
   body
 }
 
@@ -463,13 +477,17 @@
 /// Show cumulative GPA.
 /// *Example:*
 /// #example(`resume.resume-gpa("3.5", "4.0")`)
-#let resume-gpa(numerator, denominator) = {
+#let resume-gpa(numerator, denominator, lang) = {
   set text(
     size: 12pt,
     style: "italic",
     weight: "light",
   )
-  text[Cumulative GPA: #box[#strong[#numerator] / #denominator]]
+  if lang == "zh" {
+    text[平均学分绩点: #box[#strong[#numerator] / #denominator]]
+  } else {
+    text[Cumulative GPA: #box[#strong[#numerator] / #denominator]]
+  }
 }
 
 /// Show a certification in the resume.
@@ -487,12 +505,37 @@
 #let resume-skill-item(category, items) = {
   set block(below: 0.65em)
   set pad(top: 2pt)
-  
+
   pad[
     #grid(
       columns: (20fr, 80fr),
       gutter: 10pt,
       align(right)[
+        #set text(hyphenate: false)
+        == #category
+      ],
+      align(left)[
+        #set text(
+          size: 11pt,
+          style: "normal",
+          weight: "light",
+        )
+        #items.join(", ")
+      ],
+    )
+  ]
+}
+
+#let resume-skill-item-zh(category, items) = {
+  set block(below: 0.65em)
+  set pad(top: 2pt)
+
+  pad[
+    // HACK: adjust skill item arrangement
+    #grid(
+      columns: (10fr, 90fr),
+      gutter: 10pt,
+      align(left)[
         #set text(hyphenate: false)
         == #category
       ],
@@ -514,7 +557,8 @@
 
 #let default-closing(lang_data) = {
   align(bottom)[
-    #text(weight: "light", style: "italic")[ #linguify(
+    #text(weight: "light", style: "italic")[
+      #linguify(
         "attached",
         from: lang_data,
       )#sym.colon #linguify("curriculum-vitae", from: lang_data)]
@@ -546,10 +590,10 @@
   if type(accent-color) == "string" {
     accent-color = rgb(accent-color)
   }
-  
+
   // language data
   let lang_data = toml("lang.toml")
-  
+
   if closing == none {
     closing = default-closing(lang_data)
   }
@@ -569,7 +613,7 @@
     fill: color-darkgray,
     fallback: true,
   )
-  
+
   set page(
     paper: "a4",
     margin: (left: 15mm, right: 15mm, top: 10mm, bottom: 10mm),
@@ -581,18 +625,18 @@
       )] else [],
     footer-descent: 0pt,
   )
-  
+
   // set paragraph spacing
   set par(
     spacing: 0.75em,
     justify: true,
   )
-  
+
   set heading(
     numbering: none,
     outlined: false,
   )
-  
+
   show heading: it => [
     #set block(
       above: 1em,
@@ -602,13 +646,13 @@
       size: 16pt,
       weight: "regular",
     )
-    
+
     #align(left)[
       #text[#strong[#text(accent-color)[#it.body.text]]]
       #box(width: 1fr, line(length: 100%))
     ]
   ]
-  
+
   let name = {
     align(right)[
       #pad(bottom: 5pt)[
@@ -616,7 +660,7 @@
           #set text(
             size: 32pt,
             style: "normal",
-            font: ("Roboto"),
+            font: "Roboto",
           )
           #if language == "zh" or language == "ja" [
             #text(
@@ -627,12 +671,12 @@
             #text(accent-color, weight: "thin")[#author.firstname]
             #text(weight: "bold")[#author.lastname]
           ]
-          
+
         ]
       ]
     ]
   }
-  
+
   let positions = {
     set text(
       accent-color,
@@ -641,13 +685,11 @@
     )
     align(right)[
       #smallcaps[
-        #author.positions.join(
-          text[#"  "#sym.dot.c#"  "],
-        )
+        #author.positions.join(text[#"  "#sym.dot.c#"  "])
       ]
     ]
   }
-  
+
   let address = {
     set text(
       size: 9pt,
@@ -660,11 +702,11 @@
       ]
     ]
   }
-  
+
   let contacts = {
     set box(height: 9pt)
-    
-    let separator = [  #box(sym.bar.v)  ]
+
+    let separator = [ #box(sym.bar.v) ]
     let author_list = ()
 
     if ("phone" in author) {
@@ -716,11 +758,11 @@
       #author_list.join(separator)
     ]
   }
-  
+
   let letter-heading = {
     grid(
       columns: (1fr, 2fr),
-      rows: (100pt),
+      rows: 100pt,
       align(left + horizon)[
         #block(
           clip: true,
@@ -739,7 +781,7 @@
       ],
     )
   }
-  
+
   let signature = {
     align(bottom)[
       #pad(bottom: 2em)[
@@ -751,7 +793,7 @@
       ]
     ]
   }
-  
+
   // actual content
   letter-heading
   body
@@ -774,7 +816,7 @@
     ][
       #text(weight: "light", style: "italic", size: 9pt)[#date]
     ]
-    
+
     #pad(top: 0.65em, bottom: 0.65em)[
       #text(weight: "regular", fill: color-gray, size: 9pt)[
         #smallcaps[#entity-info.name] \
@@ -791,7 +833,7 @@
 /// - dear (string): optional field for redefining the "dear" variable
 #let letter-heading(job-position: "", addressee: "", dear: "") = {
   let lang_data = toml("lang.toml")
-  
+
   // TODO: Make this adaptable to content
   underline(evade: false, stroke: 0.5pt, offset: 0.3em)[
     #text(weight: "bold", size: 12pt)[Job Application for #job-position]
